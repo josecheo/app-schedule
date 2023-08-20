@@ -9,9 +9,9 @@ import arrowLeft from "../../../public/arrow-left.svg";
 
 export default function DatePickerComponent() {
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(
-    new Date().setMonth(startDate.getMonth() + 1)
-  );
+  // const [endDate, setEndDate] = useState(
+  //   new Date().setMonth(startDate.getMonth() + 1)
+  // );
 
   return (
     <div className="flex gap-4 justify-between items-center">
@@ -21,8 +21,6 @@ export default function DatePickerComponent() {
           selected={startDate}
           onChange={(date) => setStartDate(date)}
           selectsStart
-          startDate={startDate}
-          endDate={endDate}
           nextMonthButtonLabel=">"
           previousMonthButtonLabel="<"
           popperClassName="react-datepicker-left"
