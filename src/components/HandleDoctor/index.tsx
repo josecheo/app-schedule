@@ -6,7 +6,7 @@ import Button from "@/components/Button";
 import open from "../../../public/open.svg";
 import ListToSearch from "@/components/ListToSearch";
 import Modal from "@/components/Modal";
-import { Medic, AppointmentData } from "@/utils/type/interface";
+import { Doctor, AppointmentData } from "@/utils/type/interface";
 
 const listOfMedics = [
   {
@@ -57,11 +57,11 @@ const DEFATUL_MEDIC = {
 export default function HandleDoctor({
   setAppointmentData,
 }: {
-  setAppointmentData: (data: any) => void;
+  setAppointmentData?: (data: any) => void;
 }) {
   const [isSelectDoctor, setIsSelectDoctor] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [doctorSelected, setDoctorSelected] = useState<Medic>(DEFATUL_MEDIC);
+  const [doctorSelected, setDoctorSelected] = useState<Doctor>(DEFATUL_MEDIC);
   
   const openModal = () => {
     setIsModalOpen(true);
@@ -71,7 +71,7 @@ export default function HandleDoctor({
     setIsModalOpen(false);
   };
 
-  const handleSelectDoctor = (medic: Medic) => {
+  const handleSelectDoctor = (medic: Doctor) => {
     setIsSelectDoctor(true);
     setIsModalOpen(false);
     setDoctorSelected(medic);

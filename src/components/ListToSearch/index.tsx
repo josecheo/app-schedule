@@ -1,17 +1,17 @@
 import Input from "@/components/Input";
 import search from "../../../public/search.svg";
 import Image from "next/image";
-import { Medic } from "@/utils/type/interface";
+import { Doctor } from "@/utils/type/interface";
 import no_user_img from "../../../public/no_user_img.png";
 
 type ListToSearchProps = {
-  listOfMedics: Medic[];
-  handleSelectDoctor: (e: any) => void;
+  listOfMedics: Doctor[];
+  handleSelectDoctor: (e: Doctor) => void;
   type: "medic" | "patient";
 };
 
 interface GroupedMedics {
-  [letter: string]: Medic[];
+  [letter: string]: Doctor[];
 }
 
 export default function ListToSearch({
@@ -20,7 +20,7 @@ export default function ListToSearch({
   type,
 }: ListToSearchProps) {
   const groupedMedics = listOfMedics.reduce(
-    (groups: GroupedMedics, medic: Medic) => {
+    (groups: GroupedMedics, medic: Doctor) => {
       const firstLetter = medic.name.charAt(0).toUpperCase();
       if (!groups[firstLetter]) {
         groups[firstLetter] = [];

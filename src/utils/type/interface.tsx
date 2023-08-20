@@ -1,10 +1,15 @@
-export interface Medic {
+export interface Doctor {
   name: string;
   specialty: string;
+  image: string;
+}
+export interface Patient {
+  name: string;
   image: string;
   typeDocument: string;
   document: string;
 }
+
 
 export interface ListOptions {
   name: string;
@@ -16,4 +21,5 @@ export interface AppointmentData {
   doctor: string;
   date: string;
   appointmentType: string;
+  hour: string;
 }

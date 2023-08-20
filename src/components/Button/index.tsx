@@ -4,9 +4,15 @@ interface ButtonProps {
   variant: "primary" | "secondary" | "small-secondary" | "danger";
   handleClick: () => void;
   children: React.ReactNode;
+  wFull?: boolean;
 }
 
-export default function Button({ variant,handleClick, children }: ButtonProps) {
+export default function Button({
+  variant,
+  handleClick,
+  children,
+  wFull,
+}: ButtonProps) {
   let bgColor = "";
   let textColor = "";
   let padding = "";
@@ -41,7 +47,13 @@ export default function Button({ variant,handleClick, children }: ButtonProps) {
       border = "border border-gray/300";
   }
 
-  const buttonClasses = `rounded-lg	 ${border} h-10 font-semibold text-sm	 border-solid border-1 p-2 ${bgColor} ${textColor} ${padding}`;
+  const buttonClasses = `rounded-lg	${
+    wFull && "w-full"
+  } ${border} h-10 font-semibold text-sm	 border-solid border-1 p-2 ${bgColor} ${textColor} ${padding}`;
 
-  return <button className={buttonClasses} onClick={handleClick}>{children}</button>;
+  return (
+    <button className={buttonClasses} onClick={handleClick}>
+      {children}
+    </button>
+  );
 }

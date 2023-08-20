@@ -6,6 +6,7 @@ import { useState } from "react";
 import HandleDoctor from "../HandleDoctor";
 import { CONSULTATION_LIST, HOUR_LIST } from "@/utils/constants";
 import HandlePatient from "@/components/HandlePatient";
+import { AppointmentData } from "@/utils/type/interface";
 
 export default function NewAppointmentForm({
   setAppointmentData,
@@ -16,6 +17,23 @@ export default function NewAppointmentForm({
 
   const handleDateChange = (newValue: string) => {
     setDateValue(newValue);
+    setAppointmentData((prev: AppointmentData) => ({
+      ...prev,
+      date: newValue,
+    }));
+  };
+  const handleConsultationType = (newValue: string) => {
+    setAppointmentData((prev: AppointmentData) => ({
+      ...prev,
+      appointmentType: newValue,
+    }));
+  };
+
+  const handleHourChange = (newValue: string) => {
+    setAppointmentData((prev: AppointmentData) => ({
+      ...prev,
+      hour: newValue,
+    }));
   };
 
   return (
@@ -28,13 +46,18 @@ export default function NewAppointmentForm({
         )}
       </div>
       {/* Paciente */}
-      <HandlePatient />
+      {setAppointmentData && (
+        <HandlePatient setAppointmentData={setAppointmentData} />
+      )}
       {/* Tipo de atención */}
       <div>
         <p className="text-sm font-medium text-gray/700 mb-2">
           Tipo de atención
         </p>
-        <Select listOptions={CONSULTATION_LIST} />
+        <Select
+          listOptions={CONSULTATION_LIST}
+          onChange={handleConsultationType}
+        />
       </div>
       {/* Fecha y Hora */}
       <div className="flex w-full justify-between gap-5">
@@ -52,7 +75,7 @@ export default function NewAppointmentForm({
 
         <div className="flex flex-col w-full">
           <p className="text-sm font-medium text-gray/700 mb-2">Hora</p>
-          <Select listOptions={HOUR_LIST} />
+          <Select listOptions={HOUR_LIST} onChange={handleHourChange} />
         </div>
       </div>
     </div>
