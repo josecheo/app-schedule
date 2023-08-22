@@ -1,15 +1,17 @@
 export interface Doctor {
+  id: string;
   name: string;
+  gender: string;
   specialty: string;
   image: string;
 }
 export interface Patient {
-  name: string;
+  id: string
+  birthDate: string
+  gender: string
+  name: string
   image: string;
-  typeDocument: string;
-  document: string;
 }
-
 
 export interface ListOptions {
   name: string;
@@ -17,9 +19,10 @@ export interface ListOptions {
 }
 
 export interface AppointmentData {
-  patient: string;
-  doctor: string;
-  date: string;
-  appointmentType: string;
-  hour: string;
+  id: string;
+  start: string;
+  end: string;
+  patient: Patient
+  doctor: Doctor
+  serviceType: string;
 }

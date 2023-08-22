@@ -1,9 +1,15 @@
-import Link from "next/link";
+"use client";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-8">
-      <Link href="/agenda">Agenda</Link>
-    </main>
-  );
+  const isAuthenticated = useSelector((state: any) => state.isAuthenticated);
+  const router = useRouter();
+
+  if (!isAuthenticated) {
+    router.push("/login");
+  }
+  if (isAuthenticated) {
+    router.push("/agenda");
+  }
 }

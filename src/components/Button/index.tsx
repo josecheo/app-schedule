@@ -1,7 +1,7 @@
 import React from "react";
 
 interface ButtonProps {
-  variant: "primary" | "secondary" | "small-secondary" | "danger";
+  variant: "primary" | "secondary" | "small-secondary" | "danger" | "delete";
   handleClick: () => void;
   children: React.ReactNode;
   wFull?: boolean;
@@ -40,6 +40,11 @@ export default function Button({
       textColor = "text-error/700";
       padding = "py-2 px-4";
       break;
+      case "delete":
+        bgColor = "bg-error/50";
+        textColor = "text-error/700";
+        padding = "py-2 px-4";
+        break;
     default:
       bgColor = "bg-white";
       textColor = "gray/700";

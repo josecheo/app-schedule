@@ -38,7 +38,8 @@ const config: Config = {
         "gray/900": "#101828",
         "error/700": "rgba(180, 35, 24, 1)",
         "gray/10": "rgba(240, 245, 250, 1)",
-        "gray/overlay":"rgba(52, 64, 84, 0.7)"
+        "gray/overlay":"rgba(52, 64, 84, 0.7)",
+        "error/50":"rgba(254, 243, 242, 1)",
       },
     },
   },

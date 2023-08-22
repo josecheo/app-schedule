@@ -7,19 +7,23 @@ import Image from "next/image";
 import arrowRight from "../../../public/arrow-right.svg";
 import arrowLeft from "../../../public/arrow-left.svg";
 
-export default function DatePickerComponent() {
-  const [startDate, setStartDate] = useState(new Date());
-  // const [endDate, setEndDate] = useState(
-  //   new Date().setMonth(startDate.getMonth() + 1)
-  // );
+export default function DatePickerComponent({ handleDateChange, currentDate }) {
+  // const [startDate, setStartDate] = useState(new Date());
 
   return (
     <div className="flex gap-4 justify-between items-center">
-      <Image className="hover:cursor-pointer" src={arrowRight} alt="arrowRight" />
+      <Image
+        className="hover:cursor-pointer"
+        src={arrowRight}
+        alt="arrowRight"
+      />
       <div className="relative">
         <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
+          selected={currentDate}
+          onChange={(date) => {
+            handleDateChange(date);
+            // setStartDate(date);
+          }}
           selectsStart
           nextMonthButtonLabel=">"
           previousMonthButtonLabel="<"
@@ -50,7 +54,11 @@ export default function DatePickerComponent() {
                             inline-flex p-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500
                         `}
                 >
-                  <Image src={arrowRight} className="hover:cursor-pointer" alt="arrowRight" />
+                  <Image
+                    src={arrowRight}
+                    className="hover:cursor-pointer"
+                    alt="arrowRight"
+                  />
                 </button>
 
                 <button
@@ -65,7 +73,11 @@ export default function DatePickerComponent() {
                             inline-flex p-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500
                         `}
                 >
-                  <Image src={arrowLeft} className="hover:cursor-pointer" alt="arrowLeft" />
+                  <Image
+                    src={arrowLeft}
+                    className="hover:cursor-pointer"
+                    alt="arrowLeft"
+                  />
                 </button>
               </div>
             </div>

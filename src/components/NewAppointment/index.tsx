@@ -28,7 +28,7 @@ export default function NewAppointment({ onClose }: { onClose: () => void }) {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-console.log(appointmentData)
+
   return (
     <div className="flex flex-col justify-between w-full border border-solid border-gray/200 shadow-sm basis-1/2">
       <div>

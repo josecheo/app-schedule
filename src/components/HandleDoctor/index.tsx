@@ -8,45 +8,8 @@ import ListToSearch from "@/components/ListToSearch";
 import Modal from "@/components/Modal";
 import { Doctor, AppointmentData } from "@/utils/type/interface";
 
-const listOfMedics = [
-  {
-    name: "Antonio Armas",
-    specialty: "Cardiólogo",
-    image: "",
-    typeDocument: "DNI",
-    document: "12345678",
-  },
-  {
-    name: "Antonio Armas",
-    specialty: "Medico General",
-    image: "",
-    typeDocument: "DNI",
-    document: "12345678",
-  },
-  {
-    name: "Amadeo Perez",
-    specialty: "Oncólogo",
-    image: "",
-    typeDocument: "DNI",
-    document: "12345678",
-  },
-  {
-    name: "Bristin Watsonz",
-    specialty: "Cirujano",
-    image: "",
-    typeDocument: "DNI",
-    document: "12345678",
-  },
-  {
-    name: "Cameron Williamson",
-    specialty: "Cardiólogo",
-    image: "",
-    typeDocument: "DNI",
-    document: "12345678",
-  },
-];
-
 const DEFATUL_MEDIC = {
+  id:"",
   name: "",
   specialty: "",
   image: "",
@@ -56,13 +19,17 @@ const DEFATUL_MEDIC = {
 
 export default function HandleDoctor({
   setAppointmentData,
+  setDoctorId
 }: {
   setAppointmentData?: (data: any) => void;
+  setDoctorId?: (data: any) => void;
 }) {
   const [isSelectDoctor, setIsSelectDoctor] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [doctorSelected, setDoctorSelected] = useState<Doctor>(DEFATUL_MEDIC);
-  
+
+
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -75,16 +42,17 @@ export default function HandleDoctor({
     setIsSelectDoctor(true);
     setIsModalOpen(false);
     setDoctorSelected(medic);
+    setDoctorId && setDoctorId(medic.id)
   };
 
   useEffect(() => {
-    if(setAppointmentData) {
+    if (setAppointmentData) {
       setAppointmentData((prev: AppointmentData) => ({
         ...prev,
         doctor: doctorSelected.name,
       }));
     }
-  }, [doctorSelected,setAppointmentData]);
+  }, [doctorSelected, setAppointmentData]);
 
   return (
     <>
@@ -110,17 +78,18 @@ export default function HandleDoctor({
           </Button>
         </div>
       )}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        title="Selecciona un médico"
-      >
-        <ListToSearch
-          type="medic"
-          listOfMedics={listOfMedics}
-          handleSelectDoctor={handleSelectDoctor}
-        />
-      </Modal>
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          title="Selecciona un médico"
+        >
+          <ListToSearch
+            type="medic"
+            handleSelectDoctor={handleSelectDoctor}
+          />
+        </Modal>
+      )}
     </>
   );
 }
