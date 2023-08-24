@@ -1,36 +1,42 @@
 import Input from "@/components/Input";
 import search from "../../../public/search.svg";
 import Image from "next/image";
-import { Doctor } from "@/utils/type/interface";
+import { Doctor, Patient } from "@/utils/type/interface";
 import no_user_img from "../../../public/no_user_img.png";
 import { useQuery } from "@apollo/client";
 
-import { GET_PRACTITIONER_BY_NAME } from "@/graphql/queries";
+import {
+  GET_PRACTITIONER_BY_NAME,
+  GET_PATIENT_BY_NAME,
+} from "@/graphql/queries";
 import { useEffect, useState } from "react";
 import Loading from "../Loading";
 
 type ListToSearchProps = {
   handleSelectDoctor: (e: Doctor) => void;
   type: "medic" | "patient";
+  text?: string;
 };
 
 interface GroupedMedics {
-  [letter: string]: Doctor[];
+  [letter: string]: Doctor[] | Patient[];
 }
 
 export default function ListToSearch({
   handleSelectDoctor,
   type,
+  text,
 }: ListToSearchProps) {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(text || "");
   const [debouncedName, setDebouncedName] = useState(name);
-  let groupedMedicsList: GroupedMedics = {};
-  const { loading, error, data, refetch } = useQuery(GET_PRACTITIONER_BY_NAME, {
+  let groupedPeopelList: GroupedMedics = {};
+  let query = type === "medic" ? GET_PRACTITIONER_BY_NAME : GET_PATIENT_BY_NAME;
+  const { loading, error, data, refetch } = useQuery(query, {
     variables: {
       name,
     },
   });
-  
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setDebouncedName(name);
@@ -42,25 +48,48 @@ export default function ListToSearch({
   }, [name]);
 
   useEffect(() => {
+    if (text !== undefined) {
+      setName(text);
+    }
+  }, [text]);
+
+  useEffect(() => {
     if (debouncedName) {
       refetch();
     }
   }, [debouncedName]);
 
   if (!loading) {
-    const { getPractitionerByName } = data || {};
-    const groupedMedics = getPractitionerByName.reduce(
-      (groups: GroupedMedics, medic: Doctor) => {
-        const firstLetter = medic.name.charAt(0).toUpperCase();
-        if (!groups[firstLetter]) {
-          groups[firstLetter] = [];
-        }
-        groups[firstLetter].push(medic);
-        return groups;
-      },
-      {}
-    );
-    groupedMedicsList = groupedMedics;
+    if (type === "medic") {
+      const { getPractitionerByName } = data || {};
+      const groupedMedics = getPractitionerByName.reduce(
+        (groups: GroupedMedics, medic: Doctor) => {
+          const firstLetter = medic.name.charAt(0).toUpperCase();
+          if (!groups[firstLetter]) {
+            groups[firstLetter] = [];
+          }
+          groups[firstLetter].push(medic);
+          return groups;
+        },
+        {}
+      );
+      groupedPeopelList = groupedMedics;
+    }
+    if (type === "patient") {
+      const { getPatientByName } = data || {};
+      const groupedMedics = getPatientByName.reduce(
+        (groups: GroupedMedics, medic: Doctor) => {
+          const firstLetter = medic.name.charAt(0).toUpperCase();
+          if (!groups[firstLetter]) {
+            groups[firstLetter] = [];
+          }
+          groups[firstLetter].push(medic);
+          return groups;
+        },
+        {}
+      );
+      groupedPeopelList = groupedMedics;
+    }
   }
 
   if (error) {
@@ -85,13 +114,13 @@ export default function ListToSearch({
         </div>
       ) : (
         <div className="flex flex-col overflow-y-auto">
-          {Object.keys(groupedMedicsList).map((letter) => (
+          {Object.keys(groupedPeopelList).map((letter) => (
             <div key={letter}>
               <div className="flex w-full bg-gray/50 h-10 items-center p-6 border-b border-t border-solid border-gray/200">
                 <h2 className="text-xs font-medium">{letter}</h2>
               </div>
               <ul>
-                {groupedMedicsList[letter].map((medic, index) => (
+                {groupedPeopelList[letter].map((medic, index) => (
                   <li
                     key={index}
                     className="flex items-center h-72"
@@ -106,7 +135,7 @@ export default function ListToSearch({
                           {medic.name}
                         </span>
                         <span className="text-sm font-normal text-gray/500">
-                          {medic.specialty}
+                          {medic.name}
                         </span>
                       </div>
                     </div>

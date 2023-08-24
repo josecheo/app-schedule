@@ -15,8 +15,8 @@ export default function Select({ listOptions, onChange }: SelectProps) {
         onChange={(e) => onChange(e.target.value)}
       >
         {listOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.name}
+          <option key={option.code} value={option.code}>
+            {option.display}
           </option>
         ))}
       </select>

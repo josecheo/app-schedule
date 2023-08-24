@@ -12,61 +12,23 @@ import Input from "@/components/Input";
 import { PATIENT_LIST } from "@/utils/constants";
 import no_user_img from "../../../public/no_user_img.png";
 
-const listOfMedics = [
-  {
-    name: "Antonio Armas",
-    specialty: "Cardiólogo",
-    image: "",
-    typeDocument: "DNI",
-    document: "12345678",
-  },
-  {
-    name: "Antonio Armas",
-    specialty: "Medico General",
-    image: "",
-    typeDocument: "DNI",
-    document: "12345678",
-  },
-  {
-    name: "Amadeo Perez",
-    specialty: "Oncólogo",
-    image: "",
-    typeDocument: "DNI",
-    document: "12345678",
-  },
-  {
-    name: "Bristin Watsonz",
-    specialty: "Cirujano",
-    image: "",
-    typeDocument: "DNI",
-    document: "12345678",
-  },
-  {
-    name: "Cameron Williamson",
-    specialty: "Cardiólogo",
-    image: "",
-    typeDocument: "DNI",
-    document: "12345678",
-  },
-];
-
-const DEFATUL_MEDIC = {
+const DEFATUL_PATIENT = {
+  id: "",
+  birthDate: "",
+  gender: "",
   name: "",
-  specialty: "",
   image: "",
-  typeDocument: "",
-  document: "",
 };
 
 export default function HandlePatient({
   setAppointmentData,
 }: {
-  setAppointmentData: (data: AppointmentData) => void;
+  setAppointmentData: React.Dispatch<React.SetStateAction<AppointmentData>>;
 }) {
   const [isSelectPatient, setIsSelectPatient] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [patientSelected, setPatientSelected] =
-    useState<Patient>(DEFATUL_MEDIC);
+    useState<Patient>(DEFATUL_PATIENT);
   const [patient, setPatient] = useState("");
 
   const openModal = () => {
@@ -91,7 +53,9 @@ export default function HandlePatient({
     if (setAppointmentData) {
       setAppointmentData((prev: AppointmentData) => ({
         ...prev,
-        patient: patientSelected.name,
+        patient: {
+          ...patientSelected,
+        },
       }));
     }
   }, [patientSelected, setAppointmentData]);
@@ -108,7 +72,7 @@ export default function HandlePatient({
             <div className="flex flex-col">
               <p className="text-base font-medium">{patientSelected.name}</p>
               <p className="text-sm font-normal">
-                {patientSelected.typeDocument} {patientSelected.document}
+                {patientSelected.gender} {patientSelected.id}
               </p>
             </div>
           </div>
@@ -123,7 +87,7 @@ export default function HandlePatient({
         <div>
           <div className="flex justify-between items-center gap-3 flex-row">
             <div className="basis-1/2">
-              <Select listOptions={PATIENT_LIST} />
+              <Select listOptions={PATIENT_LIST} onChange={() => {}} />
             </div>
             <Input
               placeholder=""
@@ -145,11 +109,7 @@ export default function HandlePatient({
         onClose={closeModal}
         title="Selecciona un paciente"
       >
-        <ListToSearch
-          type="patient"
-          listOfMedics={listOfMedics}
-          handleSelectDoctor={handleSelectDoctor}
-        />
+        <ListToSearch type="patient" handleSelectDoctor={handleSelectDoctor} text={patient} />
       </Modal>
     </>
   );

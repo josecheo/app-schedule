@@ -3,21 +3,36 @@ import NewAppointmentForm from "@/components/NewAppointmentForm";
 import { useState } from "react";
 import Modal from "@/components/Modal";
 import Success from "@/components/Success";
+import { AppointmentData } from "@/utils/type/interface";
 
-const INITIAL_DATA = {
-  patient: "",
-  doctor: "",
-  date: "",
-  appointmentType: "",
-  hour: "",
+const INITIAL_STATE = {
+  id: "",
+  start: "",
+  end: "",
+  patient: {
+    id: "",
+    birthDate: "",
+    gender: "",
+    name: "",
+    image: "",
+  },
+  doctor: {
+    id: "",
+    name: "",
+    gender: "",
+    specialty: "",
+    image: "",
+  },
+  serviceType: "remote-consultation",
 };
 
 export default function NewAppointment({ onClose }: { onClose: () => void }) {
-  const [appointmentData, setAppointmentData] = useState(INITIAL_DATA);
+  const [appointmentData, setAppointmentData] =
+    useState<AppointmentData>(INITIAL_STATE);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const clearState = () => {
-    setAppointmentData(INITIAL_DATA);
+    setAppointmentData(INITIAL_STATE);
   };
   const openModal = () => {
     setTimeout(() => {
@@ -48,20 +63,21 @@ export default function NewAppointment({ onClose }: { onClose: () => void }) {
           </Button>
         </div>
       </div>
-
-      <Modal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        title="Selecciona un médico"
-        type="success"
-      >
-        <Success
-          summary={appointmentData}
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
           onClose={closeModal}
-          closeModalBack={onClose}
-          clearState={clearState}
-        />
-      </Modal>
+          title="Selecciona un médico"
+          type="success"
+        >
+          <Success
+            summary={appointmentData}
+            onClose={closeModal}
+            closeModalBack={onClose}
+            clearState={clearState}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

@@ -1,27 +1,33 @@
-import Button from "@/components/Button";
 import Select from "@/components/Select";
 import Input from "@/components/Input";
 import calendarDate from "../../../public/calendar.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HandleDoctor from "../HandleDoctor";
 import { CONSULTATION_LIST, HOUR_LIST } from "@/utils/constants";
 import HandlePatient from "@/components/HandlePatient";
 import { AppointmentData } from "@/utils/type/interface";
+import { converDateUTC, add30Min } from "@/utils/constants";
 
 export default function NewAppointmentForm({
   setAppointmentData,
 }: {
-  setAppointmentData: (data: any) => void;
+  setAppointmentData: React.Dispatch<React.SetStateAction<AppointmentData>>;
 }) {
   const [dateValue, setDateValue] = useState("");
+  const [hourValue, setHourValue] = useState("");
 
-  const handleDateChange = (newValue: string) => {
-    setDateValue(newValue);
-    setAppointmentData((prev: AppointmentData) => ({
-      ...prev,
-      date: newValue,
-    }));
-  };
+  useEffect(() => {
+    if (dateValue && hourValue) {
+      const date = converDateUTC(dateValue, hourValue);
+      setAppointmentData((prev: AppointmentData) => ({
+        ...prev,
+        start: date,
+        end: add30Min(date),
+      }));
+    }
+  }, [dateValue, hourValue, setAppointmentData]);
+
+
   const handleConsultationType = (newValue: string) => {
     setAppointmentData((prev: AppointmentData) => ({
       ...prev,
@@ -29,11 +35,12 @@ export default function NewAppointmentForm({
     }));
   };
 
+  const handleDateChange = (newValue: string) => {
+    setDateValue(newValue);
+  };
+
   const handleHourChange = (newValue: string) => {
-    setAppointmentData((prev: AppointmentData) => ({
-      ...prev,
-      hour: newValue,
-    }));
+    setHourValue(newValue);
   };
 
   return (

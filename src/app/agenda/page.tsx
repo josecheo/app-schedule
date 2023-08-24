@@ -31,7 +31,7 @@ export default function Scheduler() {
     if (doctorId) {
       refetch();
     }
-  }, [doctorId]);
+  }, [doctorId, refetch]);
 
   if (!loading) {
     const { getAppointmentByDoctorDate } = data || {};
@@ -89,7 +89,7 @@ export default function Scheduler() {
                   <p className="font-normal text-xs">[{item.patient.gender}]</p>
                   <p className="font-normal text-xs">-</p>
                   <p className="font-normal text-xs">
-                    [{calcularEdad(item.patient.birthDate)}]
+                    [{calcularEdad(item.patient.birthDate || "")}]
                   </p>
                 </div>
 

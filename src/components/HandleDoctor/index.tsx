@@ -9,26 +9,23 @@ import Modal from "@/components/Modal";
 import { Doctor, AppointmentData } from "@/utils/type/interface";
 
 const DEFATUL_MEDIC = {
-  id:"",
+  id: "",
   name: "",
+  gender: "",
   specialty: "",
   image: "",
-  typeDocument: "",
-  document: "",
 };
 
 export default function HandleDoctor({
   setAppointmentData,
-  setDoctorId
+  setDoctorId,
 }: {
-  setAppointmentData?: (data: any) => void;
-  setDoctorId?: (data: any) => void;
+  setAppointmentData?: React.Dispatch<React.SetStateAction<AppointmentData>>;
+  setDoctorId?: (data: string) => void;
 }) {
   const [isSelectDoctor, setIsSelectDoctor] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [doctorSelected, setDoctorSelected] = useState<Doctor>(DEFATUL_MEDIC);
-
-
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -42,14 +39,14 @@ export default function HandleDoctor({
     setIsSelectDoctor(true);
     setIsModalOpen(false);
     setDoctorSelected(medic);
-    setDoctorId && setDoctorId(medic.id)
+    setDoctorId && setDoctorId(medic.id);
   };
 
   useEffect(() => {
     if (setAppointmentData) {
       setAppointmentData((prev: AppointmentData) => ({
         ...prev,
-        doctor: doctorSelected.name,
+        doctor: doctorSelected,
       }));
     }
   }, [doctorSelected, setAppointmentData]);
@@ -84,10 +81,7 @@ export default function HandleDoctor({
           onClose={closeModal}
           title="Selecciona un médico"
         >
-          <ListToSearch
-            type="medic"
-            handleSelectDoctor={handleSelectDoctor}
-          />
+          <ListToSearch type="medic" handleSelectDoctor={handleSelectDoctor} />
         </Modal>
       )}
     </>
