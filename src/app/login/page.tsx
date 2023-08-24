@@ -1,6 +1,7 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -14,10 +15,11 @@ export default function Login() {
     router.push("/agenda");
   };
 
-  if (isAuthenticated) {
-    router.push("/agenda");
-    return null;
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/agenda");
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="flex flex-col w-full mt-8 min-h-48 rounded-lg border border-solid border-gray/200 shadow-sm">
